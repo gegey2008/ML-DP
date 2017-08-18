@@ -1,2 +1,2 @@
 # ML-DP
-Machine Learning &amp; Deep Learning
+As a beginner of Machine Learning &amp; Deep Learning
