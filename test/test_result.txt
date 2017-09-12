@@ -1,0 +1,45 @@
+cting /tmp/data/train-images-idx3-ubyte.gz
+Extracting /tmp/data/train-labels-idx1-ubyte.gz
+Extracting /tmp/data/t10k-images-idx3-ubyte.gz
+Extracting /tmp/data/t10k-labels-idx1-ubyte.gz
+
+After 1 training step(s), loss on training batch is 3.31734.
+After 1001 training step(s), loss on training batch is 0.284284.
+After 2001 training step(s), loss on training batch is 0.162725.
+After 3001 training step(s), loss on training batch is 0.152104.
+After 4001 training step(s), loss on training batch is 0.124775.
+After 5001 training step(s), loss on training batch is 0.117319.
+After 6001 training step(s), loss on training batch is 0.101177.
+After 7001 training step(s), loss on training batch is 0.0860708.
+After 8001 training step(s), loss on training batch is 0.0849149.
+After 9001 training step(s), loss on training batch is 0.0735016.
+After 10001 training step(s), loss on training batch is 0.067541.
+After 11001 training step(s), loss on training batch is 0.0673542.
+After 12001 training step(s), loss on training batch is 0.0673833.
+After 13001 training step(s), loss on training batch is 0.0609155.
+After 14001 training step(s), loss on training batch is 0.0531436.
+After 15001 training step(s), loss on training batch is 0.0511811.
+After 16001 training step(s), loss on training batch is 0.0494056.
+After 17001 training step(s), loss on training batch is 0.0504814.
+After 18001 training step(s), loss on training batch is 0.0443066.
+After 19001 training step(s), loss on training batch is 0.0449429.
+After 20001 training step(s), loss on training batch is 0.0381483.
+After 21001 training step(s), loss on training batch is 0.0393953.
+After 22001 training step(s), loss on training batch is 0.041271.
+After 23001 training step(s), loss on training batch is 0.0388363.
+After 24001 training step(s), loss on training batch is 0.0384187.
+After 25001 training step(s), loss on training batch is 0.0330784.
+After 26001 training step(s), loss on training batch is 0.0353222.
+After 27001 training step(s), loss on training batch is 0.0375894.
+After 28001 training step(s), loss on training batch is 0.0358074.
+After 29001 training step(s), loss on training batch is 0.0326731.
+
+
+
+
+Extracting /tmp/data/train-images-idx3-ubyte.gz
+Extracting /tmp/data/train-labels-idx1-ubyte.gz
+Extracting /tmp/data/t10k-images-idx3-ubyte.gz
+Extracting /tmp/data/t10k-labels-idx1-ubyte.gz
+After 29001 training step(s), validationaccuracy = 0.9858
+
