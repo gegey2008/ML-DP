@@ -32,7 +32,7 @@ def variable_on_cpu_with_collection(name, shape, dtype, stddev, wd):
 								 shape = shape,
 								 initializer = tf.truncated_normal_initializer(stddev=stddev, dtype=dtype))
 		if wd is not None:
-			weight_decay = tf.mul(tf.nn.l2_loss(weight), wd, name='weight_loss')
+			weight_decay = tf.multiply(tf.nn.l2_loss(weight), wd, name='weight_loss')
 			tf.add_to_collection(name='losses', value=weight_decay)
 		return weight
 
@@ -50,19 +50,19 @@ def losses_summary(total_loss):
 	losses = tf.get_collection(key='losses')
 	maintain_averages_op = average_op.apply(losses+[total_loss])
 	for i in losses+[total_loss]:
-		tf.scalar_summary(i.op.name+'_raw', i)
-		tf.scalar_summary(i.op.name, average_op.average(i))
+		tf.summary.scalar(i.op.name+'_raw', i)
+		tf.summary.scalar(i.op.name, average_op.average(i))
 	return maintain_averages_op
 
 def one_step_train(total_loss, step):
 	batch_count = int(train_samples_per_epoch/cifar10_input.batch_size)
-	dacay_step = num_epochs_per_decay*batch_count
+	decay_step = num_epochs_per_decay*batch_count
 	lr = tf.train.exponential_decay(learning_rate=initial_learning_rate,
 									global_step=step,
 									decay_steps=decay_step,
 									decay_rate=learning_rate_decay_factor,
 									staircase=True)
-	tf.scalar_summary('learning_rate', lr)
+	tf.summary.scalar('learning_rate', lr)
 	losses_movingaverage_op = losses_summary(total_loss)
 	with tf.control_dependencies(control_inputs=[losses_movingaverage_op]):
 		#establish train obj
@@ -112,7 +112,7 @@ def inference(images):
 	
 	#fully_connected_layer1
 	#Flaten
-	reshaped_pool2 = tf.rehape(tensor=pool2, shape=(-1, 6*6*64))
+	reshaped_pool2 = tf.reshape(tensor=pool2, shape=(-1, 6*6*64))
 	with tf.variable_scope(name_or_scope='fully_connected_layer1') as scope:
 		weight = variable_on_cpu_with_collection(name='weight',
 												 shape=(6*6*64, 384),

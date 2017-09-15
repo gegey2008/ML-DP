@@ -40,12 +40,12 @@ def read_cifar10(filename_queue):
 	read_bytes = label_bytes + image_bytes
 	#define a Reader, read fixed Bytes from file every time
 	reader = tf.FixedLengthRecordReader(record_bytes=read_bytes)
-	iamge.key, value = reader.read(filename_queue)
+	image.key, value = reader.read(filename_queue)
     #turn the read binary string file to number_vector
 	value = tf.decode_raw(value, tf.uint8)
 	#find label and 3-D tensor
 	image.label = tf.slice(input_=value, begin=[0], size=[label_bytes])
-	data_mat = tf.slice(input_=value, begin=[label_bytes], size=[image.label])
+	data_mat = tf.slice(input_=value, begin=[label_bytes], size=[image_bytes])
 	data_mat = tf.reshape(data_mat, (image.depth, image.height, image.width))
 	#convert from [depth, height, width] to [height, width, depth]
 	image.mat = tf.transpose(data_mat, [1, 2, 0])
@@ -54,27 +54,25 @@ def read_cifar10(filename_queue):
 def _generate_image_and_label_batch(img_obj, min_samples_in_queue,
 									batch_size, shuffle_flag):
 	if shuffle_flag == False:  #order batch
-		iamge_batch, label_batch = tf.train.batch(
-			tensors_list = img_obj,
-			batch_size = batch_size,
-			num_threads = 4,
-			capacity = min_samples_in_queue + 3 * batch_size)
+		image_batch, label_batch = tf.train.batch(tensors = img_obj,
+												  batch_size = batch_size,
+												  num_threads = 4,
+												  capacity = min_samples_in_queue + 3 * batch_size)
 	else:
-		iamge_batch, label_batch = tf.train.shuffle_batch(
-			tensors_list = img_obj,
-			batch_size = batch_size,
-			num_threads = 4,
-			min_after_dequeue = min_samples_in_quene,
-			capacity = min_queue_examples + 3 * batch_size)
+		image_batch, label_batch = tf.train.shuffle_batch(tensors = img_obj,
+														  batch_size = batch_size,
+														  num_threads = 4,
+														  min_after_dequeue = min_samples_in_queue,
+														  capacity = min_samples_in_queue + 3 * batch_size)
 
-	tf.image_summary('input_images', iamge_batch, max_images=6)
+	tf.summary.image('input_images', image_batch)
 
 	return image_batch, tf.reshape(label_batch, shape=[batch_size])
 
 
 def preprocess_input_data():
 	filenames = [os.path.join(data_dir, 'data_batch_%d.bin' % i)
-	             for i in xrange(1, 6)]
+	             for i in range(1, 6)]
 	for f in filenames:
 		if not tf.gfile.Exists(f):
 			raise ValueErroe('Faild to find file: '+ f)
@@ -82,25 +80,23 @@ def preprocess_input_data():
 	
 	image = read_cifar10(filename_queue)
 	new_img = tf.cast(image.mat, tf.float32)
-	height = IMAGE_SIZE
-	width = IMAGE_SIZE
-	tf.image_summary('raw_input_image', tf.reshape(new_img, [1, 32, 32, 3]))
-	new_image = tf.random_crop(new_img, size=[height, width, 3])
+	tf.summary.image('raw_input_image', tf.reshape(new_img, [1, 32, 32, 3]))
+	new_image = tf.random_crop(new_img, size=[IMAGE_SIZE, IMAGE_SIZE, 3])
 	new_image = tf.image.random_flip_left_right(new_image)
 	new_image = tf.image.random_brightness(new_image, max_delta=63)
 	new_image = tf.image.random_contrast(new_image, lower=0.2, upper=1.8)
-	final_iamge = tf.image.per_image_whitening(new_image)
+	final_image = tf.image.per_image_standardization(new_image)
 
 	min_samples_ratio_in_queue = 0.4
 	min_samples_in_queue = int(NUM_EXAMPLES_PER_EPOCH_FOR_TRAIN*min_samples_ratio_in_queue)
 	return _generate_image_and_label_batch([final_image, image.label],
-										   min_queue_examples, batch_size,
-										   shuffle=True)
+										   min_samples_in_queue, batch_size,
+										   shuffle_flag=True)
 
 def inputs(eval_data, data_dir, batch_size):
 	if not eval_data:
 		filenames = [os.path.join(data_dir, 'data_batch_%d.bin' % i)
-					 for i in xrange(1, 6)]
+					 for i in range(1, 6)]
 		num_examples_per_epoch = NUM_EXAMPLES_PER_EPOCH_FOR_TRAIN
 	else:
 		filenames = [os.path.join(data_dir, 'test_batch.bin')]
@@ -124,5 +120,5 @@ def inputs(eval_data, data_dir, batch_size):
 	min_samples_ratio_in_queue = 0.4
 	min_samples_in_queue = int(NUM_EXAMPLES_PER_EPOCH_FOR_EVAL*min_samples_ratio_in_queue)
 	return _generate_image_and_label_batch([final_image, image.label],
-										   min_queue_examples, batch_size,
-										   shuffle=False)
+										   min_samples_in_queue, batch_size,
+										   shuffle_flag=False)
