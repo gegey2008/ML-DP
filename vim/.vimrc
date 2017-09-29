@@ -208,4 +208,3 @@ fun CreatedTime()
 	endif
 	exe "1," . l . "g/Created Time:.*/s/Created Time:.*/Created Time: " .strftime("%Y-%m-%d %T")
 endfun
-"auto add python header --end 
