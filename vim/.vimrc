@@ -1,210 +1,201 @@
-" the call to :runtime you can find below.  If you wish to change any of those
-" settings, you should do it in this file (/etc/vim/vimrc), since debian.vim
-" will be overwritten everytime an upgrade of the vim packages is performed.
-" It is recommended to make changes after sourcing debian.vim since it alters
-" the value of the 'compatible' option.
+set nocompatible              " be iMproved, required
+filetype off                  " requied!
 
-" This line should not be removed as it ensures that various options are
-" properly set to work with the Vim-related packages available in Debian.
-runtime! debian.vim
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+" alternatively, pass a path where Vundle should install plugins
+"call vundle#begin('~/some/path/here')
 
-" Uncomment the next line to make Vim more Vi-compatible
-" NOTE: debian.vim sets 'nocompatible'.  Setting 'compatible' changes numerous
-" options, so any other options should be set AFTER setting 'compatible'.
-"set compatible
+" let Vundle manage Vundle, required
+Plugin 'VundleVim/Vundle.vim'
+Plugin 'gmarik/vundle'
 
-" Vim5 and later versions support syntax highlighting. Uncommenting the next
-" line enables syntax highlighting by default.
-if has("syntax")
-  syntax on
-endif
+"------------------
+" python sytax checker
+"------------------
+Plugin 'nvie/vim-flake8'
+Plugin 'vim-scripts/Pydiction'
+Plugin 'vim-scripts/indentpython.vim'
+Plugin 'davidhalter/jedi-vim'
+Plugin 'Valloric/YouCompleteMe'
+Plugin 'jiangmiao/auto-pairs'
+"------------------
+" Code Completions
+"------------------
+Plugin 'Shougo/neocomplcache'
+Plugin 'mattn/emmet-vim'
+Plugin 'Raimondi/delimitMate'
+Plugin 'ervandew/supertab'
+"" snippets
+Plugin 'garbas/vim-snipmate'
+Plugin 'honza/vim-snippets'
 
-" If using a dark background within the editing area and syntax highlighting
-" turn on this option as well
-"set background=dark
-
-" Uncomment the following to have Vim jump to the last position when
-" reopening a file
-"if has("autocmd")
-"  au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
-"endif
-
-" Uncomment the following to have Vim load indentation rules and plugins
-" according to the detected filetype.
-"if has("autocmd")
-"  filetype plugin indent on
-"endif
-
-" The following are commented out as they cause vim to behave a lot
-" differently from regular Vi. They are highly recommended though.
-"set showcmd		" Show (partial) command in status line.
-"set showmatch		" Show matching brackets.
-"set ignorecase		" Do case insensitive matching
-"set smartcase		" Do smart case matching
-"set incsearch		" Incremental search
-"set autowrite		" Automatically save before commands like :next and :make
-"set hidden		" Hide buffers when they are abandoned
-"set mouse=a		" Enable mouse usage (all modes)
-
-" Source a global configuration file if available
-if filereadable("/etc/vim/vimrc.local")
-  source /etc/vim/vimrc.local
-endif
-
-
-"" set Vundle for vim
-"set nocompatible              " required
-"filetype off                  " required
-"" set the runtime path to include Vundle and initialize
-"set rtp+=~/.vim/bundle/Vundle.vim
-"call vundle#begin()
-"" alternatively, pass a path where Vundle should install plugins
-"" call vundle#begin('~/some/path/here')
-"" let Vundle manage Vundle, required
-"" Add all your plugins here (note older versions of Vundle used Bundle instead of Plugin)
-"
-"" filesystem
-"Plugin 'gmarik/Vundle.vim'
-"Plugin 'jistr/vim-nerdtree-tabs'
-"Plugin 'kien/ctrlp.vim'
-"
-"" html
-"" isnowfy only compatible with python not python3
-"Plugin 'isnowfy/python-vim-instant-markdown'
-"Plugin 'jtratner/vim-flavored-markdown'
-"Plugin 'suan/vim-instant-markdown'
-"Plugin 'nelstrom/vim-markdown-preview'
-"
-"" python sytax checker
-"Plugin 'nvie/vim-flake8'
-"Plugin 'vim-scripts/Pydiction'
-"Plugin 'vim-scripts/indentpython.vim'
-"Plugin 'scrooloose/syntastic'
-"
-"" auto-completion stuff
-"" Plugin 'klen/python-mode'
-"" Plugin 'Valloric/YouCompleteMe'
-"Plugin 'klen/rope-vim'
-"Plugin 'davidhalter/jedi-vim'
-"Plugin 'ervandew/supertab'
 "" code folding
-"Plugin 'tmhedberg/SimpylFold'
-"
-"" Colors!!!
-"Plugin 'altercation/vim-colors-solarized'
-"Plugin 'jnurmine/Zenburn'
-"
-"" All of your Plugins must be added before the following line
-"call vundle#end()            " required
-"
-"filetype plugin indent on    " required
-"let g:SimpylFold_docstring_preview = 1
-"
-"" autocomplete
-""let g:ycm_autoclose_preview_window_after_completion=1
-"
-""custom keys
-""let mapleader=" "
-""map <leader>g  :YcmCompleter GoToDefinitionElseDeclaration<CR>
-""call togglebg#map("<F5>")
-"
-""colorscheme zenburn
-""set guifont=Monaco:h14
-"
-"let NERDTreeIgnore=['\.pyc$', '\~$'] "ignore files in NERDTree
-"
-""I don't like swap files
-"set noswapfile
-"
-""turn on numbering
-"set nu
-"
-""------------Start Python PEP 8 stuff----------------
-""" Number of spaces that a pre-existing tab is equal to.
-"au BufRead,BufNewFile *py,*pyw,*.c,*.h set tabstop=4
-"
-""spaces for indents
-"au BufRead,BufNewFile *.py,*pyw set shiftwidth=4
-"au BufRead,BufNewFile *.py,*.pyw set expandtab
-"au BufRead,BufNewFile *.py set softtabstop=4
-"
-"" Use the below highlight group when displaying bad whitespace is desired.
-"highlight BadWhitespace ctermbg=red guibg=red
-"
-"" Display tabs at the beginning of a line in Python mode as bad.
-"au BufRead,BufNewFile *.py,*.pyw match BadWhitespace /^\t\+/
-"
-"" Make trailing whitespace be flagged as bad.
-"au BufRead,BufNewFile *.py,*.pyw,*.c,*.h match BadWhitespace /\s\+$/
-"
-"" Wrap text after a certain number of characters
-"au BufRead,BufNewFile *.py,*.pyw, set textwidth=100
-"
-"" Use UNIX (\n) line endings.
-"au BufNewFile *.py,*.pyw,*.c,*.h set fileformat=unix
-"
-"" For full syntax highlighting:
-"let python_highlight_all=1
-"syntax on
-"
-"" Keep indentation level from previous line:
-"autocmd FileType python set autoindent
-"
-"" make backspaces more powerfull
-"set backspace=indent,eol,start 
-"
-""Folding based on indentation:
-"autocmd FileType python set foldmethod=indent
-"
-""use space to open folds
-"nnoremap <space> za 
-""----------Stop python PEP 8 stuff--------------
-"
-""js stuff"
-"autocmd FileType javascript setlocal shiftwidth=2 tabstop=2
+Plugin 'tmhedberg/SimpylFold'
+
+
+"------ snipmate dependencies -------
+Plugin 'MarcWeber/vim-addon-mw-utils'
+Plugin 'tomtom/tlib_vim'
+
+"-----------------
+" Fast navigation
+"-----------------
+"Plugin 'edsono/vim-matchit'
+Plugin 'Lokaltog/vim-easymotion'
+
+"--------------
+" Fast editing
+"--------------
+Plugin 'tpope/vim-surround'
+Plugin 'scrooloose/nerdcommenter'
+Plugin 'sjl/gundo.vim'
+Plugin 'godlygeek/tabular'
+Plugin 'nathanaelkane/vim-indent-guides'
+
+"--------------
+" IDE features
+"--------------
+Plugin 'scrooloose/nerdtree'
+Plugin 'humiaozuzu/TabBar'
+Plugin 'majutsushi/tagbar'
+Plugin 'mileszs/ack.vim'
+Plugin 'kien/ctrlp.vim'
+Plugin 'tpope/vim-fugitive'
+Plugin 'Lokaltog/vim-powerline'
+Plugin 'scrooloose/syntastic'
+Plugin 'bronson/vim-trailing-whitespace'
+
+"-------------
+" Other Utils
+"-------------
+" Plugin 'humiaozuzu/fcitx-status'
+Plugin 'nvie/vim-togglemouse'
+
+"----------------------------------------
+" Syntax/Indent for language enhancement
+"----------------------------------------
+"------- web backend ---------
+Plugin '2072/PHP-Indenting-for-VIm'
+Plugin 'tpope/vim-rails'
+Plugin 'lepture/vim-jinja'
+Plugin 'digitaltoad/vim-jade'
+
+"------- web frontend ----------
+Plugin 'othree/html5.vim'
+"Plugin 'tpope/vim-haml'
+Plugin 'pangloss/vim-javascript'
+Plugin 'kchmck/vim-coffee-script'
+Plugin 'nono/jquery.vim'
+Plugin 'groenewege/vim-less'
+Plugin 'wavded/vim-stylus'
+Plugin 'nono/vim-handlebars'
+
+"------- markup language -------
+Plugin 'tpope/vim-markdown'
+" Plugin 'timcharper/textile.vim'
+
+"------- Ruby --------
+" Plugin 'tpope/vim-endwise'
+
+"------- Go ----------
+Plugin 'fatih/vim-go'
+
+"------- FPs ------
+Plugin 'kien/rainbow_parentheses.vim'
+" Plugin 'wlangstroth/vim-racket'
+" Plugin 'vim-scripts/VimClojure'
+" Plugin 'rosstimson/scala-vim-support'
+
+"--------------
+" Color Schemes
+"--------------
+Plugin 'rickharris/vim-blackboard'
+Plugin 'altercation/vim-colors-solarized'
+Plugin 'rickharris/vim-monokai'
+Plugin 'tpope/vim-vividchalk'
+Plugin 'Lokaltog/vim-distinguished'
+Plugin 'chriskempson/vim-tomorrow-theme'
+Plugin 'fisadev/fisa-vim-colorscheme'
+
+call vundle#end()            " required
+filetype plugin indent on    " requiredn 'gmarik/vundle'
+
+"YouComplteteMe\
+set runtimepath+=~/.vim/bundle/YouCompleteMe
+let g:ycm_collect_identifiers_from_tags_files = 1 "开启YCM基于标签引擎
+let g:ycm_collect_identifiers_from_comments_and_strings = 1 " 注释与字符串中的内容也用于补全
+let g:syntastic_ignore_files=[".*\.py$"]
+let g:ycm_seed_identifiers_with_syntax = 1                  " 语法关键字补全
+let g:ycm_complete_in_comments = 1
+let g:ycm_confirm_extra_conf = 0
+let g:ycm_key_list_select_completion = ['<c-n>', '<Down>']  " 映射按键, 没有这个会拦截掉tab, 导致其他插件的tab不能用
+let g:ycm_key_list_previous_completion = ['<c-p>', '<Up>']
+let g:ycm_complete_in_comments = 1                          " 在注释输入中也能补全
+let g:ycm_complete_in_strings = 1                           " 在字符串输入中也能补全
+let g:ycm_collect_identifiers_from_comments_and_strings = 1 " 注释和字符串中的文字也会被收入补全
+let g:ycm_global_ycm_extra_conf='~/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py'
+let g:ycm_show_diagnostics_ui = 0                           " 禁用语法检查
+inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<CR>" |
+nnoremap <c-j> :YcmCompleter GoToDefinitionElseDeclaration<CR>|
+let g:ycm_min_num_of_chars_for_completion= 2                "从第2个键入字符就开始罗列匹配项
 
 "changed by yangyang
 
-set tabstop=4
-set softtabstop=4
-set shiftwidth=4
-set textwidth=79
-set expandtab
-set autoindent
-set fileformat=unix
-set nobackup
-" set cursorline
-set ruler
-set autoindent
-set splitbelow
-set splitright
-" Enable folding
-set foldmethod=indent
-set foldlevel=99
+set number
+set guioptions-=r
+set guioptions-=L
+set guioptions-=b
+set guifont=Monaco:h13
+syntax on
+"let g:solarized_termcolors=256
+"set background=dark        "设置背景色"
+set nowrap    "设置不折行"
+set fileformat=unix    "设置以unix的格式保存文件"
+set cindent        "设置C样式的缩进格式"
+set tabstop=4    "设置table长度"
+set shiftwidth=4        "同上"
+set showmatch    "显示匹配的括号"
+set scrolloff=5        "距离顶部和底部5行"
+set laststatus=2    "命令行为两行"
+set fenc=utf-8      "文件编码"
+set backspace=2
+"set mouse=a        "启用鼠标"
+"set selection=exclusive
+"set selectmode=mouse,key
+set matchtime=5
+set ignorecase        "忽略大小写"
+set incsearch
+set hlsearch        "高亮搜索项"
+set noexpandtab        "不允许扩展table"
+set whichwrap+=<,>,h,l
+set autoread
+"set cursorline        "突出显示当前行"
+"set cursorcolumn
 " Enable folding with the spacebar
 nnoremap <space> za
 
 
+"auto add pyhton header --start
+autocmd BufNewFile *.py 0r ~/.vim/vim_template/vim_python_header
+autocmd BufNewFile *.py ks|call FileName()|'s
+autocmd BufNewFile *.py ks|call CreatedTime()|'s
 
-"auto add pyhton header --start  
-autocmd BufNewFile *.py 0r ~/.vim/vim_template/vim_pyhton_header  
-autocmd BufNewFile *.py ks|call FileName()|'s  
-autocmd BufNewFile *.py ks|call CreatedTime()|'s  
-				      
-fun FileName()  
-	if line("$") > 10  
+fun FileName()
+	if line("$") > 10
 		let l = 10
 	else
-		let l = line("$")  
-	endif   
+		let l = line("$")
+	endif
 	exe "1," . l . "g/File Name:.*/s/File Name:.*/File Name: " .expand("%")
-endfun   																	
+endfun
 
 fun CreatedTime()
 	if line("$") > 10
 		let l = 10
-	else  
+	else
 		let l = line("$")
 	endif
 	exe "1," . l . "g/Created Time:.*/s/Created Time:.*/Created Time: " .strftime("%Y-%m-%d %T")
 endfun
+
