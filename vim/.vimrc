@@ -140,26 +140,32 @@ inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<CR>" |
 nnoremap <c-j> :YcmCompleter GoToDefinitionElseDeclaration<CR>|
 let g:ycm_min_num_of_chars_for_completion= 2                "从第2个键入字符就开始罗列匹配项
 
+"Pydiction
+filetype plugin on
+let g:pydiction_location ='~/.vim/bundle/Pydiction/complete-dict'
+
 "changed by yangyang
 
 set number
-set guioptions-=r
-set guioptions-=L
-set guioptions-=b
+"set guioptions-=r
+"set guioptions-=L
+"set guioptions-=b
 set guifont=Monaco:h13
 syntax on
 "let g:solarized_termcolors=256
 "set background=dark        "设置背景色"
-set nowrap    "设置不折行"
-set fileformat=unix    "设置以unix的格式保存文件"
+"set nowrap    "设置不折行"
+"set fileformat=unix    "设置以unix的格式保存文件"
 set cindent        "设置C样式的缩进格式"
 set tabstop=4    "设置table长度"
+set softtabstop=4
 set shiftwidth=4        "同上"
 set showmatch    "显示匹配的括号"
 set scrolloff=5        "距离顶部和底部5行"
-set laststatus=2    "命令行为两行"
-set fenc=utf-8      "文件编码"
-set backspace=2
+set autoindent
+"set laststatus=2    "命令行为两行"
+set encoding=utf-8      "文件编码"
+"set backspace=2
 "set mouse=a        "启用鼠标"
 "set selection=exclusive
 "set selectmode=mouse,key
@@ -167,7 +173,7 @@ set matchtime=5
 set ignorecase        "忽略大小写"
 set incsearch
 set hlsearch        "高亮搜索项"
-set noexpandtab        "不允许扩展table"
+"set noexpandtab        "不允许扩展table"
 set whichwrap+=<,>,h,l
 set autoread
 "set cursorline        "突出显示当前行"
