@@ -1,11 +1,13 @@
 #!/usr/bin/python
-#-*- coding:utf-8 -*-  
-############################  
+#-*- coding:utf-8 -*-
+############################
 #File Name: train.py
 #Author: yang
-#Mail: milkyang2008@126.com  
+#Mail: milkyang2008@126.com
 #Created Time: 2017-09-15 22:05:13
 ############################
+
+from __future__ import division, print_function, absolute_import
 
 import os
 os.environ['TF_CPP_MIN_LOG_LEVEL']='2'
@@ -38,12 +40,14 @@ def train():
 				_, loss_value = sess.run(fetches=[one_step_gradient_update, total_loss])
 				assert not np.isnan(loss_value)
 				if step%10 == 0:
-					print('step %d, the loss_value is %.2f' % (step, loss_value))
+                                    f = open("./result.txt",'a') #add  modle
+				    print('step %d, the loss_value is %.2f' % (step, loss_value),file=f)
+                                    f.close()
 				if step%100 == 0:
-					all_summaries = sess.run(all_summary_obj)
-					Event_writer.add_summary(summary=all_summaries, global_step=step)
+				    all_summaries = sess.run(all_summary_obj)
+				    Event_writer.add_summary(summary=all_summaries, global_step=step)
 				if step%1000 == 0 or (step+1)==max_iter_num:
-					variables_save_path = os.path.join(checkpoint_path, 'model-parameters.bin')
-					saver.save(sess, variables_save_path, global_step=step)
+				    variables_save_path = os.path.join(checkpoint_path, 'model-parameters.bin')
+				    saver.save(sess, variables_save_path, global_step=step)
 if __name__ == '__main__':
 	train()

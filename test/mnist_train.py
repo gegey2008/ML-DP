@@ -1,9 +1,9 @@
 #!/usr/bin/python
-#-*- coding:utf-8 -*-  
-############################  
+#-*- coding:utf-8 -*-
+###########################
 #File Name: mnist_train.py
 #Author: yang
-#Mail: milkyang2008@126.com  
+#Mail: milkyang2008@126.com
 #Created Time: 2017-08-26 15:04:53
 ############################
 
