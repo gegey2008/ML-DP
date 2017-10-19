@@ -91,6 +91,6 @@ class DataPreprocessing(object):
 if __name__ == '__main__':
     test_a = DataPreprocessing()
     print(test_a.scope, test_a.methods, test_a.args, test_a.session)
-
+    print(dir(test_a))
 
 
