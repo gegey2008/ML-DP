@@ -58,6 +58,26 @@ class DataPreprocessing(object):
                 batch = m(batch)
         return batch
 
+    def restore_parpams(self, session):
+        self.global_mean.is_restored(session)
+        self.global_std.is_restored(session)
+        self.global_pc.is_restored(session)
+
+    def initialize(self, dataset, session, limit=None):
+        """
+        Initialize preprocessing methods that pre-requires calculation
+        over entire dataset.
+        """
+        if self.global_mean.is_required:
+            if self.global_mean.value is not None:
+                self.global_mean.assgin(self.global_mean.value, session)
+            if not self.global_mean.id_restored(session):
+
+
+
+
+
+
 
     class PersistentParameter:
         """
@@ -86,6 +106,14 @@ class DataPreprocessing(object):
             self.value = value
             session.run(self.var_r.assgin(True))
             self.restored = True
+
+
+
+
+
+
+
+
 
 
 if __name__ == '__main__':
