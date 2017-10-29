@@ -93,5 +93,48 @@ def input_data(shape=None, palceholder=None, dtype=tf.float32,
     return palceholder
 
 
+def dropout(incoming, keep_prob, noise_shape=None, name="Dropout"):
+    """ Dropout.
+
+    Outputs the input element scaled up by `1 / keep_prob`. The scaling is so
+    that the expected sum is unchanged.
+
+    By default, each element is kept or dropped independently. If noise_sape is
+    sepcified it must be broadcastable to the shape of x, and only dimensions with
+    noise_shape[i] == shape(x)[i] will make independent decisions. For example,
+    if shape(x) = [k, 1, m, n] add noise_shape = [k, 1, 1, n], each batch and channel
+    component will be kept independently and each row and column will be kept or not
+    kept together,
+
+    Argumets:
+        incoming : A `Tensor`. The incoming tesnor.
+        keep_prob : A float representing the probability that each element is kept.
+        nosie_shape : A 1-D Tensor of type int32, representing that each shape for
+            randomly generated keep/drop flags.
+        name : A name for this layer(Optional)
+
+    """
+
+
+    with tf.name_scope(name) as scope:
+
+        inference = incoming
+
+        def apply_dropout():
+            if type(inference) in [list, np.array]:
+                for x in inference:
+                    x = tf.nn.dropout(x, keep_prob, noise_shape)
+                return inference
+            else:
+                return tf.nn.dropout(inference, keep_prob, noise_shape)
+
+        is_training = tf.learn.get_training_mode()
+        #If 'is_training' is True: apply_dropout;  else do: lambda: inference
+        inference = tf.cond(is_training, apply_dropout, lambda: inference)
+
+    #Track output tensor.
+    tf.add_to_collection(tf.GraphKeys.LAYER_TENSOR + '/' +name, inference)
+
+    return inference
 
 
