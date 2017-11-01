@@ -10,9 +10,7 @@
 from __future__ import division, print_function, absolute_import
 
 import tensorflow as tf
-#import tflearn
-import initializations
-import losses
+import tflearn
 
 from tensorflow.contrib.framework.python.ops import add_arg_scope as contrib_add_arg_scope
 from tensorflow.python.framework import ops
@@ -53,14 +51,14 @@ def variable(name, shape=None, dtype=tf.float32, initializer=None,
     """
 
     if isinstance(initializer, str):
-        initializer = initializations.get(initializer)()
+        initializer = tflearn.initializations.get(initializer)()
     # Remove shape param if initializer is a Tensor
     if not callable(initializer) and isinstance(initializer, tf.Tensor):
         shape = None
 
 
     if isinstance(regularizer, str):
-        regularizer = losses.get(regularizer)
+        regularizer = tflearn.losses.get(regularizer)
 
     collections = set(collection or [])
     collections |= set([ops.GraphKeys.GLOBAL_VARIABLES,
@@ -82,7 +80,7 @@ def variable(name, shape=None, dtype=tf.float32, initializer=None,
 
 
 def get_all_variables():
-    """ get_all_variables.
+    """ get_all_variable s.
 
     Get all Graph variables.
 
