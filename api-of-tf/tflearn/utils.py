@@ -43,6 +43,13 @@ def get_from_module(identifier, module_params, module_name, instantiate=False, k
     return identifier
 
 
-
+def get_incoming_shape(incoming):
+    """ Returns the incoming data shape """
+    if isinstance(incoming, tf.Tensor):
+        return incoming.get_shape().as_list()
+    elif type(incoming) in [np.array, np.ndarray, list, tuple]:
+        return np.shape(incoming)
+    else:
+        raise Exception("Invalid incoming layer.")
 
 

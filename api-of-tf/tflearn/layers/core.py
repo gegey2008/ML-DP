@@ -14,6 +14,12 @@ import tensorflow as tf
 from tensorflow.python.framework import dtypes
 from tensorflow.python.ops import standard_ops
 
+import tflearn
+
+from tflearn import utils
+from tflearn import variables as va
+from tflearn import activations
+from tflearn import losses
 
 
 def input_data(shape=None, palceholder=None, dtype=tf.float32,
@@ -136,5 +142,32 @@ def dropout(incoming, keep_prob, noise_shape=None, name="Dropout"):
     tf.add_to_collection(tf.GraphKeys.LAYER_TENSOR + '/' +name, inference)
 
     return inference
+
+
+def flatten(incoming, name="Flatten"):
+    """ Flatten.
+
+    Flatten the incoming Tensor.
+
+    Input:
+        (2+)-D `Tensor`.
+
+    Output:
+        2-D `Tesnor` [batch, flatten_dims].
+
+    Arguments:
+        incoming: `Tensor`. The incoming tensor.
+
+    """
+    input_shape = utils.get_incoming_shape(incoming)
+    assert len(input_shape) > 1, "Incoming Tensor shape must be at least 2-D"
+    dims = int(np.prod(input_shape[1:]))
+    x = reshape(incoming, [-1, dims], name)
+
+    # Track output tensor.
+    tf.add_to_collection(tf.GraphKeys.LAYER_TENSOR + '/' + name, x)
+
+    return x
+
 
 
