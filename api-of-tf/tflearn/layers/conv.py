@@ -131,4 +131,49 @@ def conv_2d(incoming, nb_filter, filter_size, strides=1, padding='same',
     return inference
 
 
+def max_pool_2d(incoming, kernel_size, strides=None, padding='same',
+                name="MaxPool2D"):
+    input_shape = utils.get_incoming_shape(incoming)
+    assert len(input_shape) == 4, "Incoming Tensor shape must be 4-D"
 
+    kernel = utils.autoformat_kernel_2d(kernel_size)
+    strides = utils.autoformat_kernel_2d(strides) if strides else kernel
+    padding = utils.autofromat_padding(padding)
+
+    with tf.name_scope(name) as scope:
+        inference = tf.nn.max_pool(incoming, kernel, strides, padding)
+
+        # Track activations
+        tf.add_to_collection(tf.GraphKeys.ACTIVATIONS, inference)
+
+    # Add attributes to Tensor to easy access weights.
+    inference.scope = scope
+
+    # Track output tensor.
+    tf.add_to_collection(tf.GraphKeys.LAYER_TENSOR + '/' + name, inference)
+
+    return inference
+
+
+def avg_pool_2d(incoming, kernel_size, strides=None, padding='same',
+                name="AvgPool2D"):
+    input_shape = utils.get_incoming_shape(incoming)
+    assert len(input_shape) == 4, "Incoming Tensor shape must be 4-D"
+
+    kernel = utils.autoformat_kernel_2d(kernel_size)
+    strides = utils.autoformat_kernel_2d(strides) if strides else kernel
+    padding = utils.autofromat_padding(padding)
+
+    with tf.name_scope(name) as scope:
+        inference = tf.nn.avg_pool(incoming, kernel, strides, padding)
+
+        # Track activations
+        tf.add_to_collection(tf.GraphKeys.ACTIVATIONS, inference)
+
+    # Add attributes to Tensor to easy access weights.
+    inference.scope = scope
+
+    # Track output tensor.
+    tf.add_to_collection(tf.GraphKeys.LAYER_TENSOR + '/' + name, inference)
+
+    return inference
