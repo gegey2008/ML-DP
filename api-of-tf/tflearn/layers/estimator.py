@@ -94,3 +94,79 @@ def regression(incoming, placeholder='default', optimizer='adam',
         raise ValueError("Invalid Optimizer type.")
 
     inputs = tf.get_collection(tf.GraphKeys.INPUTS)
+
+
+    #Building metric
+    #No auto accuracy for liner regression
+    if len(input_shape) == 1 and metric == 'default':
+        mteric = None
+    # If no placeholder, only a Tensor can be pass as metric
+    if not isinstance(metric, tf.Tensor) and placeholder is None:
+        metric = None
+    if metric is not None:
+        # Default metric is accuracy
+        if metric == 'default':
+            metric = 'accuracy'
+        if isinstance(metric, str):
+            metric = metric.get(metric)()
+            metric.build(incoming, placeholder, inputs)
+            metric = metric.get_tensor()
+        elif isinstance(metric, metrics.Metric):
+            metric.build(incoming, placeholder, inputs)
+            metric = metric.get_tensor()
+        elif hasattr(metric, '__call__'):
+            try:
+                metric = metric(incoming, placeholder, inputs)
+            except Exception as e:
+                print(str(e))
+                print('Reminder: Custom metric function arguments must be '
+                      'defined as: custom_metric(y_pred, y_true, x).')
+                exit()
+        elif not isinstance(metric, tf.Tensor):
+            raise ValueError("Invalid Metric type.")
+
+    #Building other ops(loss, training ops...)
+    if isinstance(loss, str):
+        loss = objectives.get(loss)(incoming, placeholder)
+    #Check if function
+    elif hasattr(loss, '__call__'):
+        try:
+            loss = loss(incoming, placeholder)
+        except Exception as e:
+            print(str(e))
+            print('Reminder: Custom loss function arguments must be defined as: '
+                  'custom_loss(y_pred, y_true).')
+            exit()
+    elif not isinstance(loss, tf.Tensor):
+        raise ValueError("Invalid Loss type.")
+
+    tr_vars = trainable_vars
+    if not tr_vars:
+        tr_vars = tf.trainable_variables()
+
+    if not restore:
+        tf.add_to_collection(tf.GraphKeys.EXCL_RESTORE_VARS, 'moving_avg')
+        tf.add_to_collection(tf.GraphKeys.EXCL_RESTORE_VARS, optimizer._name + '/')
+
+    tr_op = TrainOp(loss=loss,
+                    optimizer=optimizer,
+                    metric=metric,
+                    trainable_vars=tr_vars,
+                    batch_size=batch_size,
+                    shuffle=shuffle_batches,
+                    step_tensor=step_tensor,
+                    validation_monitors=validation_monitors,
+                    validation_batch_size=validation_batch_size,
+                    name=op_name)
+
+    tf.add_to_collection(tf.GraphKeys.TRAIN_OPS, tr_op)
+
+    if not hasattr(incoming, '__len__'):
+        incoming.palceholder = palceholder
+
+    return incoming
+
+
+
+
+
