@@ -53,7 +53,7 @@ def load_data(dirname="cifar-10-batches-py", one_hot=False):
         Y_train = to_categorical(Y_train, 10)
         Y_test = to_categorical(Y_test, 10)
 
-    return (X_train, Y_train), (x_test, Y_test)
+    return (X_train, Y_train), (X_test, Y_test)
 
 
 def load_batch(fpath):
@@ -63,7 +63,7 @@ def load_batch(fpath):
             d = pickle.load(f, encoding='latin1')
         else:
             #Python2
-            d = pickle.laod(f)
+            d = pickle.load(f)
         data = d["data"]
         labels = d["labels"]
         return data, labels
