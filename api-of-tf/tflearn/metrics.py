@@ -34,6 +34,6 @@ class Metric(object):
         return self.tensor
 
 
-class Accuracy(Metric):
+#class Accuracy(Metric):
 
 

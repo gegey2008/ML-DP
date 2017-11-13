@@ -19,11 +19,11 @@ from .. import activations
 from .. import initializations
 from .. import losses
 from .. import utils
-from ..layers.normalization import batch_normalization
+#from ..layers.normalization import batch_normalization
 
 
 def conv_2d(incoming, nb_filter, filter_size, strides=1, padding='same',
-            activation='linear', bias=Ture, weights_init='uniform_scaling',
+            activation='linear', bias=True, weights_init='uniform_scaling',
             bias_init='zeros', regularizer=None, weight_decay=0.001,
             trainable = True, restore=True, reuse=False, scope=None,
             name='Conv2D'):

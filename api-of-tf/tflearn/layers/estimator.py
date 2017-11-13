@@ -16,11 +16,11 @@ from tflearn import utils
 from tflearn import objectives
 from tflearn import metrics
 from tflearn import optimizers
-from tf.learn.helper.trainer import TrainOp
+from tflearn.helpers.trainer import TrainOp
 
 def regression(incoming, placeholder='default', optimizer='adam',
-               loss='categorical_crossentropy', metric='default'
-               learning_rate=0.001, dtype=tf.float32, batch_size=64
+               loss='categorical_crossentropy', metric='default',
+               learning_rate=0.001, dtype=tf.float32, batch_size=64,
                shuffle_batchs=True, to_one_hot=False, n_classes=None,
                trainalbe_vars=None, restore=True, op_name=None,
                validation_monitor=None, validation_batch_size=None, name=None):

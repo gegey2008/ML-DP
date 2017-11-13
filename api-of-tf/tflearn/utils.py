@@ -25,7 +25,7 @@ except Exception as e:
 import numpy as np
 import tensorflow as tf
 
-import .variables as vs
+import tflearn.variables as vs
 
 def get_from_module(identifier, module_params, module_name, instantiate=False, kwargs=None):
     if isinstance(identifier, six.string_types):
@@ -59,7 +59,7 @@ def get_incoming_shape(incoming):
 # Auto format kernel
 def autoformt_kernel_2d(strides):
     if isinstance(strides, int):
-        return [1 strides, strides, 1]
+        return [1, strides, strides, 1]
     elif isinstance(strides, (tuple, list, tf.TensorShape)):
         if len(strides) == 2:
             return [1, strides[0], strides[1], 1]
