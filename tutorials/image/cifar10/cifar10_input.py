@@ -52,18 +52,18 @@ def read_cifar10(filename_queue):
 	return image
 
 def _generate_image_and_label_batch(img_obj, min_samples_in_queue,
-									batch_size, shuffle_flag):
+				batch_size, shuffle_flag):
 	if shuffle_flag == False:  #order batch
 		image_batch, label_batch = tf.train.batch(tensors = img_obj,
-												  batch_size = batch_size,
-												  num_threads = 4,
-												  capacity = min_samples_in_queue + 3 * batch_size)
+							batch_size = batch_size,
+							num_threads = 4,
+							capacity = min_samples_in_queue + 3 * batch_size)
 	else:
 		image_batch, label_batch = tf.train.shuffle_batch(tensors = img_obj,
-														  batch_size = batch_size,
-														  num_threads = 4,
-														  min_after_dequeue = min_samples_in_queue,
-														  capacity = min_samples_in_queue + 3 * batch_size)
+								batch_size = batch_size,
+								num_threads = 4,
+								min_after_dequeue = min_samples_in_queue,
+								capacity = min_samples_in_queue + 3 * batch_size)
 
 	tf.summary.image('input_images', image_batch)
 
@@ -90,8 +90,8 @@ def preprocess_input_data():
 	min_samples_ratio_in_queue = 0.4
 	min_samples_in_queue = int(NUM_EXAMPLES_PER_EPOCH_FOR_TRAIN*min_samples_ratio_in_queue)
 	return _generate_image_and_label_batch([final_image, image.label],
-										   min_samples_in_queue, batch_size,
-										   shuffle_flag=True)
+						min_samples_in_queue, batch_size,
+						shuffle_flag=True)
 
 def inputs(eval_data, data_dir, batch_size):
 	if not eval_data:
@@ -120,5 +120,5 @@ def inputs(eval_data, data_dir, batch_size):
 	min_samples_ratio_in_queue = 0.4
 	min_samples_in_queue = int(NUM_EXAMPLES_PER_EPOCH_FOR_EVAL*min_samples_ratio_in_queue)
 	return _generate_image_and_label_batch([final_image, image.label],
-										   min_samples_in_queue, batch_size,
-										   shuffle_flag=False)
+						min_samples_in_queue, batch_size,
+						shuffle_flag=False)
