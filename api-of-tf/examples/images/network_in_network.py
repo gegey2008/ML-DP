@@ -34,5 +34,28 @@ from tflearn.datasets import cifar10
 Y = to_categorical(Y, 10)
 Y_test = to_categorical(Y_test, 10)
 
+# Building 'Network In Network'
+network = input_data(shape=[None, 32, 32, 3])
+network = conv_2d(network, 192, 5, activation='relu')
+network = conv_2d(network, 160, 1, activation='relu')
+network = conv_2d(network, 96, 1, activation='relu')
+network = max_pool_2d(network, 3, strides=2)
+network = dropout(network, 0.5)
+network = conv_2d(network, 192, 5, activation='relu')
+network = conv_2d(network, 192, 1, activation='relu')
+network = conv_2d(network, 192, 1, activation='relu')
+network = avg_pool_2d(network, 3, strides=2)
+network = dropout(network, 0.5)
+network = conv_2d(network, 192, 3, activation='relu')
+network = conv_2d(network, 192, 1, activation='relu')
+network = conv_2d(network, 10, 1, activation='relu')
+network = avg_pool_2d(network, 8)
+network = flatten(network)
+network = regression(network, optimizer='adam',
+                    loss='softmax_categorical_crossentropy',
+                    learning_rate=0.001)
 
-
+#Training
+model = tflearn.DNN(network)
+model.fit(X, Y, n_epoch=50, shffle=False, validation_set=(X_test, Y_test),
+         show_metric=True, batch_size=128, run_id='cifar10_net_in_net')
