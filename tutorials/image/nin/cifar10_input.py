@@ -23,9 +23,9 @@ NUM_EXAMPLES_PER_EPOCH_FOR_TRAIN = 50000
 #eval set
 NUM_EXAMPLES_PER_EPOCH_FOR_EVAL = 10000
 #data position
-data_dir = '../datasets/cifar-10-batches-bin'
+#data_dir = '../datasets/cifar-10-batches-bin'
 
-batch_size = 128
+#batch_size = 128
 
 def read_cifar10(filename_queue):
     #set struct by class
@@ -70,14 +70,13 @@ def _generate_image_and_label_batch(img_obj, min_samples_in_queue,
 	return image_batch, tf.reshape(label_batch, shape=[batch_size])
 
 
-def preprocess_input_data():
+def preprocess_input_data(data_dir, batch_size):
 	filenames = [os.path.join(data_dir, 'data_batch_%d.bin' % i)
 	             for i in range(1, 6)]
 	for f in filenames:
 		if not tf.gfile.Exists(f):
 			raise ValueErroe('Faild to find file: '+ f)
 	filename_queue = tf.train.string_input_producer(string_tensor = filenames)
-	
 	image = read_cifar10(filename_queue)
 	new_img = tf.cast(image.mat, tf.float32)
 	tf.summary.image('raw_input_image', tf.reshape(new_img, [1, 32, 32, 3]))
