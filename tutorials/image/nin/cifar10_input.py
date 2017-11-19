@@ -75,7 +75,7 @@ def preprocess_input_data(data_dir, batch_size):
 	             for i in range(1, 6)]
 	for f in filenames:
 		if not tf.gfile.Exists(f):
-			raise ValueErroe('Faild to find file: '+ f)
+			raise ValueError('Faild to find file: '+ f)
 	filename_queue = tf.train.string_input_producer(string_tensor = filenames)
 	image = read_cifar10(filename_queue)
 	new_img = tf.cast(image.mat, tf.float32)
