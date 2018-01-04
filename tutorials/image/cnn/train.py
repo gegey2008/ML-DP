@@ -41,9 +41,9 @@ def train():
 				assert not np.isnan(loss_value)
 				if step%10 == 0:
 				    print('step %d, the loss_value is %.2f' % (step, loss_value))
-                                    f = open("./result.txt",'a') #add  modle
-				    print('step %d, the loss_value is %.2f' % (step, loss_value),file=f)
-                                    f.close()
+                                    #f = open("./result.txt",'a') #add  modle
+				    #print('step %d, the loss_value is %.2f' % (step, loss_value),file=f)
+                                    #f.close()
 				if step%100 == 0:
 				    all_summaries = sess.run(all_summary_obj)
 				    Event_writer.add_summary(summary=all_summaries, global_step=step)
