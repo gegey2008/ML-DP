@@ -14,6 +14,8 @@ matplotlib.use('Agg')
 
 # begin
 import skimage.data
+import skimage.io
+import skimage.transform
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
 import selectivesearch
@@ -22,8 +24,9 @@ import selectivesearch
 def main():
 
     # loading astronaut image
-    img = skimage.data.astronaut()
-
+    # img = skimage.data.astronaut()
+    img = skimage.io.imread('test1.jpg')
+    #transform.resize(img, (256, 256))
     # perform selective search
     img_lbl, regions = selectivesearch.selective_search(
         img, scale=500, sigma=0.9, min_size=10)
@@ -52,7 +55,7 @@ def main():
         ax.add_patch(rect)
 
     plt.show()
-    #plt.savefig('test.png')
+    plt.savefig('test1.png')
 
 if __name__ == "__main__":
     main()
